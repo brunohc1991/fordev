@@ -227,4 +227,12 @@ void main() {
 
     expect(find.text('Main error'), findsOneWidget);
   });
+
+  testWidgets('Should close strams on dispose', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    addTearDown(() {
+      verify(presenter.dispose()).called(1);
+    });
+  });
 }
