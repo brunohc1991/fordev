@@ -1,34 +1,8 @@
-import 'dart:async';
-
 import 'package:faker/faker.dart';
-import 'package:meta/meta.dart';
+import 'package:fordev/presentation/presenters/presenters.dart';
+import 'package:fordev/presentation/protocols/protocols.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-
-abstract class Validation {
-  String validate({@required String field, @required String value});
-}
-
-class LoginState {
-  String emailError;
-}
-
-class StreamLoginPresenter {
-  final Validation validation;
-  final _controler = StreamController<LoginState>.broadcast();
-
-  var _state = LoginState();
-
-  Stream<String> get emailErrorStream =>
-      _controler.stream.map((state) => state.emailError);
-
-  StreamLoginPresenter({@required this.validation});
-
-  void validateEmail(String email) {
-    _state.emailError = validation.validate(field: 'email', value: email);
-    _controler.add(_state);
-  }
-}
 
 class ValidationSpy extends Mock implements Validation {}
 
