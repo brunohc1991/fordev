@@ -18,16 +18,42 @@ class ValidationComposite implements Validation {
 class FieldValidationSpy extends Mock implements FieldValidation {}
 
 void main() {
-  test('Should return null iff all validations returns null or empty', () {
-    final validation001 = FieldValidationSpy();
+  FieldValidationSpy validation001;
+  FieldValidationSpy validation002;
+  FieldValidationSpy validation003;
+  ValidationComposite sut;
+
+  void mockValidation1(String error) {
+    when(validation001.validate(any)).thenReturn(error);
+  }
+
+  void mockValidation2(String error) {
+    when(validation002.validate(any)).thenReturn(error);
+  }
+
+  void mockValidation3(String error) {
+    when(validation003.validate(any)).thenReturn(error);
+  }
+
+  setUp(() {
+    validation001 = FieldValidationSpy();
+    validation002 = FieldValidationSpy();
+    validation003 = FieldValidationSpy();
+
     when(validation001.field).thenReturn('any_field');
-    when(validation001.validate(any)).thenReturn(null);
+    mockValidation1(null);
 
-    final validation002 = FieldValidationSpy();
     when(validation002.field).thenReturn('any_field');
-    when(validation002.validate(any)).thenReturn('');
+    mockValidation2(null);
 
-    final sut = ValidationComposite([validation001, validation002]);
+    when(validation003.field).thenReturn('other_field');
+    mockValidation3(null);
+
+    sut = ValidationComposite([validation001, validation002, validation003]);
+  });
+
+  test('Should return null iff all validations returns null or empty', () {
+    mockValidation2('');
 
     final error = sut.validate(field: 'any_field', value: 'any_value');
 
