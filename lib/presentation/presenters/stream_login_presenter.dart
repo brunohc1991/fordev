@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:fordev/domain/helpers/domain_error.dart';
+import 'package:fordev/ui/pages/login/login_presenter.dart';
 import 'package:meta/meta.dart';
 import '../../domain/usecases/usecases.dart';
 import '../protocols/validation.dart';
@@ -19,7 +20,7 @@ class LoginState {
       password != null;
 }
 
-class StreamLoginPresenter {
+class StreamLoginPresenter implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
   var _controller = StreamController<LoginState>.broadcast();
@@ -38,7 +39,7 @@ class StreamLoginPresenter {
   Stream<bool> get isFormValidStream =>
       _controller?.stream?.map((state) => state.isFormValid)?.distinct();
 
-  Stream<bool> get isLoadingValidStream =>
+  Stream<bool> get isLoadingStream =>
       _controller?.stream?.map((state) => state.isLoading)?.distinct();
 
   StreamLoginPresenter(

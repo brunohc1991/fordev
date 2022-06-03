@@ -4,10 +4,10 @@ import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import '../../data/http/http.dart';
 
-class httpAdapter implements HttpClient {
+class HttpAdapter implements HttpClient {
   final Client client;
 
-  httpAdapter(this.client);
+  HttpAdapter(this.client);
 
   @override
   Future<Map> request(

@@ -145,7 +145,7 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
-    expectLater(sut.isLoadingValidStream, emitsInOrder([true, false]));
+    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
     await sut.auth();
   });
@@ -155,7 +155,7 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
-    expectLater(sut.isLoadingValidStream, emits(false));
+    expectLater(sut.isLoadingStream, emits(false));
     sut.mainErrorStream.listen(
         expectAsync1((error) => expect(error, 'Credenciais invalidas')));
 
@@ -167,7 +167,7 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
-    expectLater(sut.isLoadingValidStream, emits(false));
+    expectLater(sut.isLoadingStream, emits(false));
     sut.mainErrorStream.listen(expectAsync1((error) =>
         expect(error, 'Algo errado aconteceu. Tente novamente em breve!')));
 

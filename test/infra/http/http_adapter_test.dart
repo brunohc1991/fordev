@@ -9,12 +9,12 @@ class ClientSpy extends Mock implements Client {}
 
 void main() {
   ClientSpy client;
-  httpAdapter sut;
+  HttpAdapter sut;
   String url;
 
   setUp(() {
     client = ClientSpy();
-    sut = httpAdapter(client);
+    sut = HttpAdapter(client);
     url = faker.internet.httpUrl();
   });
 
