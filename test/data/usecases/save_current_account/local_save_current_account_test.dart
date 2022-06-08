@@ -34,6 +34,12 @@ void main() {
   LocalSaveCurrentAccount sut;
   AccountEntity account;
 
+  void mockError() {
+    when(cacheStorage.saveSecure(
+            key: anyNamed('key'), value: anyNamed('value')))
+        .thenThrow(Exception());
+  }
+
   setUp(() {
     cacheStorage = SaveSecureCacheStorageSpy();
     sut = LocalSaveCurrentAccount(saveSecureCacheStorage: cacheStorage);
@@ -48,9 +54,7 @@ void main() {
 
   test('Should throw Unexpected error if SaveSecureCacheStorage throws',
       () async {
-    when(cacheStorage.saveSecure(
-            key: anyNamed('key'), value: anyNamed('value')))
-        .thenThrow(Exception());
+    mockError();
 
     final future = sut.save(account);
 
