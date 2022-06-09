@@ -32,9 +32,22 @@ void main() {
     value = faker.guid.guid();
   });
 
+  void mockSaveSecureError() {
+    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+        .thenThrow(Exception());
+  }
+
   test('Should call save secure with correct values', () async {
     await sut.saveSecure(key: key, value: value);
 
     verify(secureStorage.write(key: key, value: value));
+  });
+
+  test('Should throw is save secure throws', () {
+    mockSaveSecureError();
+
+    final future = sut.saveSecure(key: key, value: value);
+
+    expect(future, throwsA(TypeMatcher<Exception>()));
   });
 }
