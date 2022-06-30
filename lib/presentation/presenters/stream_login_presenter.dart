@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:fordev/domain/helpers/domain_error.dart';
+import 'package:fordev/ui/helpers/erros/ui_error.dart';
 import 'package:fordev/ui/pages/login/login_presenter.dart';
 import 'package:meta/meta.dart';
 import '../../domain/usecases/usecases.dart';
@@ -8,9 +9,9 @@ import '../protocols/validation.dart';
 class LoginState {
   String email;
   String password;
-  String emailError;
-  String passwordError;
-  String mainError;
+  UiError emailError;
+  UiError passwordError;
+  UiError mainError;
   String navigateTo;
   bool isLoading = false;
 
@@ -28,13 +29,13 @@ class StreamLoginPresenter implements LoginPresenter {
 
   var _state = LoginState();
 
-  Stream<String> get emailErrorStream =>
+  Stream<UiError> get emailErrorStream =>
       _controller?.stream?.map((state) => state.emailError)?.distinct();
 
-  Stream<String> get passwordErrorStream =>
+  Stream<UiError> get passwordErrorStream =>
       _controller?.stream?.map((state) => state.passwordError)?.distinct();
 
-  Stream<String> get mainErrorStream =>
+  Stream<UiError> get mainErrorStream =>
       _controller?.stream?.map((state) => state.mainError)?.distinct();
 
   Stream<bool> get isFormValidStream =>
@@ -55,15 +56,29 @@ class StreamLoginPresenter implements LoginPresenter {
 
   void validateEmail(String email) {
     _state.email = email;
-    _state.emailError = validation.validate(field: 'email', value: email);
+    _state.emailError = _validateFeld(field: 'email', value: email);
     _update();
   }
 
   void validatePassword(String password) {
     _state.password = password;
-    _state.passwordError =
-        validation.validate(field: 'password', value: password);
+    _state.passwordError = _validateFeld(field: 'password', value: password);
     _update();
+  }
+
+  UiError _validateFeld({String field, String value}) {
+    final error = validation.validate(field: field, value: value);
+
+    switch (error) {
+      case ValidationError.invalidField:
+        return UiError.invalidField;
+        break;
+      case ValidationError.requiredField:
+        return UiError.requiredFiel;
+        break;
+      default:
+        return null;
+    }
   }
 
   Future<void> auth() async {
@@ -73,7 +88,14 @@ class StreamLoginPresenter implements LoginPresenter {
       await authentication.auth(
           AuthenticationParams(email: _state.email, secret: _state.password));
     } on DomainError catch (error) {
-      _state.mainError = error.description;
+      switch (error) {
+        case DomainError.invalidCredentials:
+          _state.mainError = UiError.invalidCredentials;
+          break;
+        default:
+          _state.mainError = UiError.unexpected;
+          break;
+      }
     }
     _state.isLoading = false;
     _update();

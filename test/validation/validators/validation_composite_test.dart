@@ -1,3 +1,4 @@
+import 'package:fordev/presentation/protocols/protocols.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -12,15 +13,15 @@ void main() {
   FieldValidationSpy validation003;
   ValidationComposite sut;
 
-  void mockValidation1(String error) {
+  void mockValidation1(ValidationError error) {
     when(validation001.validate(any)).thenReturn(error);
   }
 
-  void mockValidation2(String error) {
+  void mockValidation2(ValidationError error) {
     when(validation002.validate(any)).thenReturn(error);
   }
 
-  void mockValidation3(String error) {
+  void mockValidation3(ValidationError error) {
     when(validation003.validate(any)).thenReturn(error);
   }
 
@@ -42,20 +43,18 @@ void main() {
   });
 
   test('Should return null iff all validations returns null or empty', () {
-    mockValidation2('');
-
     final error = sut.validate(field: 'any_field', value: 'any_value');
 
     expect(error, null);
   });
 
   test('Should return the first error', () {
-    mockValidation1('Error_001');
-    mockValidation2('Error_002');
-    mockValidation3('Error_003');
+    mockValidation1(ValidationError.requiredField);
+    mockValidation2(ValidationError.requiredField);
+    mockValidation3(ValidationError.invalidField);
 
     final error = sut.validate(field: 'any_field', value: 'any_value');
 
-    expect(error, 'Error_002');
+    expect(error, ValidationError.requiredField);
   });
 }
