@@ -233,7 +233,7 @@ void main() {
     mainErrorController.add(UiError.invalidCredentials);
     await tester.pump();
 
-    expect(find.text('Credenciais invalidas'), findsOneWidget);
+    expect(find.text('Credenciais inválidas'), findsOneWidget);
   });
 
   testWidgets('Should present error message if authnetication throws',

@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'components/components.dart';
 import '../../components/components.dart';
-import '../../../utils/i18n/i18n.dart';
-import '../../helpers/erros/erros.dart';
+import '../../helpers/helpers.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginPresenter presenter;
@@ -52,7 +51,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   LoginHeader(),
                   Headline1(
-                    text: 'Login',
+                    text: R.strings.logIn,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(32),
