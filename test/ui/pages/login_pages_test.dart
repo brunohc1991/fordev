@@ -199,6 +199,7 @@ void main() {
     isFormValidController.add(true);
 
     await tester.pump();
+    await tester.ensureVisible(find.byType(RaisedButton));
     await tester.tap(find.byType(RaisedButton));
     await tester.pump();
 
