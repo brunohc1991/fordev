@@ -5,6 +5,9 @@ class EnUs implements Translations {
   String get addAccount => 'Add account';
 
   @override
+  String get confirmPassword => 'confirm password';
+
+  @override
   String get defaultError => "Something went wrong. Please try again soon!";
 
   @override
@@ -18,6 +21,9 @@ class EnUs implements Translations {
 
   @override
   String get logIn => "Login";
+
+  @override
+  String get name => "Name";
 
   @override
   String get password => "Password";

@@ -1,10 +1,12 @@
 abstract class Translations {
   String get addAccount;
-  String get password;
+  String get confirmPassword;
+  String get defaultError;
   String get email;
-  String get logIn;
-  String get requiredField;
   String get invalidField;
   String get invalidCredentials;
-  String get defaultError;
+  String get logIn;
+  String get name;
+  String get password;
+  String get requiredField;
 }
