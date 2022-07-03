@@ -14,6 +14,9 @@ class PtBr implements Translations {
   String get email => "E-mail";
 
   @override
+  String get emailInUse => "E-mail já utilizado";
+
+  @override
   String get invalidCredentials => 'Credenciais inválidas';
 
   @override
